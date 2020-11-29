@@ -13,16 +13,16 @@ var owners = [
         id: 1,
         name: "Adam",
         pets: [
-            // {
-            //     id: 1,
-            //     name: "Vera",
-            //     type: "Dog"
-            // },
-            // {
-            //     id: 2,
-            //     name: "Felix",
-            //     type: "Cat"
-            // }
+            {
+                id: 1,
+                name: "Vera",
+                type: "Dog"
+            },
+            {
+                id: 2,
+                name: "Felix",
+                type: "Cat"
+            }
         ]
     },
     {
@@ -153,6 +153,31 @@ app.post('/owners/:id/pets', (req, res) => {
 
 // DELETE /api/owners/:id/pets/:petId
 
+app.delete('/owners/:id/pets/:petID', (req, res) => {
+    const id = req.params.id;
+
+    let owner = owners.find((owner) => {
+        return owner.id === Number(id);
+    });
+
+    let pets = owner.pets;
+    const petID = req.params.petID;
+
+    let pet = pets.find((pet) => {
+        return pet.id === Number(petID);
+    });
+
+    let petIndex = pets.findIndex((p) => {
+        return p === pet;
+    })
+
+    if (petIndex > -1) {
+        pets.splice(petIndex, 1);
+    }
+
+    res.status(200).send("your pet is deleted");
+
+});
 
 app.listen(3000, function(){
     console.log('Pets API is now listening on port 3000...');
