@@ -74,6 +74,21 @@ app.post('/owners', (req, res) => {
 
 // PUT /api/owners/:id
 
+app.put("/owners/:id", (req, res) => {
+    const id = req.params.id;
+
+    let owner = owners.find((owner) => {
+        return owner.id === Number(id);
+    })
+
+    let ownerIndex = owners.findIndex((o) => {
+        return o === owner;
+    })
+
+    owners[ownerIndex] = {...owners[ownerIndex], ...req.body};
+	res.send(owners[ownerIndex]);
+})
+
 // DELETE /api/owners/:id
 
 app.delete('/owners/:id', (req, res) => {
@@ -81,7 +96,7 @@ app.delete('/owners/:id', (req, res) => {
 
     let owner = owners.find((owner) => {
         return owner.id === Number(id);
-    });
+    })
 
     let ownerIndex = owners.findIndex((o) => {
         return o === owner;
@@ -124,7 +139,6 @@ app.get('/owners/:id/pets/:petID', (req, res) => {
     res.status(200).send(pet);
 })
 
-
 // POST /api/owners/:id/pets
 
 app.post('/owners/:id/pets', (req, res) => {
@@ -150,6 +164,35 @@ app.post('/owners/:id/pets', (req, res) => {
 })
 
 // PUT /api/owners/:id/pets/:petId
+
+app.put("/owners/:id/pets/:petId", (req, res) => { //not working currently
+    const id = req.params.id;
+
+    let owner = owners.find((owner) => {
+        return owner.id === Number(id);
+    });
+
+    let ownerIndex = owners.findIndex((o) => {
+        return o === owner;
+    })
+
+    let pets = owner.pets;
+    const petID = req.params.petID;
+
+    let pet = pets.find((pet) => {
+        return pet.id === Number(petID);
+    });
+
+    let petIndex = owners[ownerIndex].pets.findIndex((p) => {
+        return p === pet;
+    })
+
+    console.log(petIndex);
+
+    owners[ownerIndex].pets[petIndex] = {...owners[ownerIndex].pets[petIndex], ...req.body};
+    res.send(owners[ownerIndex]);
+})
+
 
 // DELETE /api/owners/:id/pets/:petId
 
